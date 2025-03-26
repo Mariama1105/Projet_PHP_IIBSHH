@@ -110,15 +110,12 @@ require_once "shared/database.php";
                 require_once "page/prestations/liste.php";
             }
             if ($_GET['action'] == 'addPrestation') {
-                $patients = mysqli_query($connexion, "SELECT * FROM patient");
-                $medecins = mysqli_query($connexion, "SELECT * FROM users WHERE id_r = (SELECT id_role FROM role WHERE libelle_role = 'medecin')");
-                $consultations = mysqli_query($connexion, "SELECT * FROM consultation");
                 require_once "page/prestations/add.php";
             }
             if ($_GET['action'] == 'editPrestation') {
                 $id = $_GET['id'];
                 $prestation = mysqli_fetch_assoc(mysqli_query($connexion, "SELECT * FROM prestation WHERE id_prestation = $id"));
-                $patients = mysqli_query($connexion, "SELECT * FROM patient");
+                $patients = mysqli_query($connexion, "SELECT * FROM users WHERE id_r = 4");
                 $medecins = mysqli_query($connexion, "SELECT * FROM users WHERE id_r = (SELECT id_role FROM role WHERE libelle_role = 'medecin')");
                 $consultations = mysqli_query($connexion, "SELECT * FROM consultation");
                 require_once "page/prestations/edit.php";
@@ -128,11 +125,11 @@ require_once "shared/database.php";
                 extract($_POST);
                 $sql = "UPDATE prestation SET id_patient='$id_patient', id_medecin='$id_medecin', id_cons='$id_cons', type_pres='$type_pres', date_pres='$date_pres' WHERE id_prestation = $id";
                 mysqli_query($connexion, $sql);
-                header("location: index.php?action=listePrestation");
+                header("location: index.php?action=listePrestation"); 
             }
             if ($_GET['action'] == 'deletePrestation') {
                 $id = $_GET['id'];
-                $sql = "DELETE FROM prestation WHERE id_prestation = $id";
+                $sql = "DELETE FROM prestations WHERE id_prestation = $id";
                 mysqli_query($connexion, $sql);
                 header("location: index.php?action=listePrestation");
             }
@@ -235,7 +232,29 @@ require_once "shared/database.php";
                 mysqli_query($connexion, $sql);
                 header("location: index.php?action=listeSpecialites");
             }
+
+            if ($_GET['action'] == 'mesRendezVous'){
+                require_once 'page/patients_interface/mesRDV.php';
+            }
+            if ($_GET['action'] == 'mesConsultations'){
+                require_once 'page/patients_interface/mesConsultations.php';
+            }
+
+            if ($_GET['action'] == 'mesPrestations'){
+                require_once 'page/patients_interface/mesPrestations.php';
+            }
+
+            if ($_GET['action'] == 'voirStats'){
+                require_once 'chart.php';
+            }
+
+            if($_GET["action"] == 'deconnexion'){
+                session_destroy();
+                header("Location: index.php");
+            } 
+
         } else {
+
             require_once "page/auth/login.php";
         }
         ?>

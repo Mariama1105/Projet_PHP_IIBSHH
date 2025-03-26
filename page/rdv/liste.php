@@ -1,12 +1,10 @@
 <?php
-// Fetch appointments with doctor and patient names using simple join
 $sql = "SELECT r.*, u.*, p.*
         FROM rendez_vous r, users u, patient p
         WHERE r.id_med = u.id_user 
           AND r.id_pat = p.id_pat";
 $rdvs = mysqli_query($connexion, $sql);
 
-// Check for errors
 if (!$rdvs) {
     die("SQL query failed: " . mysqli_error($connexion));
 }

@@ -1,10 +1,4 @@
 <?php
-
-if(isset($_SESSION['user_id'])) {
-    header("Location: index.php?action=listeConsultation");
-    exit();
-}
-
 if($_SERVER['REQUEST_METHOD'] == 'POST') {
     $login = mysqli_real_escape_string($connexion, $_POST['login']);
     $password = mysqli_real_escape_string($connexion, $_POST['password']);
@@ -18,7 +12,22 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
         $_SESSION['user_name'] = $user['prenom'] . ' ' . $user['nom'];
         $_SESSION['user_role'] = $user['id_r'];
         
-        header("Location: index.php?action=listeConsultation");
+        switch($user['id_r']) {
+            case 1: // Medecin
+                header("Location: index.php?action=listeConsultation");
+                break;
+            case 5: // Secretaire
+                header("Location: index.php?action=listeRDV");
+                break;
+            case 6: // Responsable prestation
+                header("Location: index.php?action=listePrestation");
+                break;
+            case 4: // Patient
+                header("Location: index.php?action=mesConsultations");
+                break;
+            default:
+                header("Location: index.php?action=listeConsultation");
+        }
         exit();
     } else {
         $error = "Identifiants incorrects";

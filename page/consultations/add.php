@@ -6,8 +6,7 @@ $sql = "SELECT u.id_user, u.nom, u.prenom
         AND r.libelle_role = 'medecin'";
 $medecins = mysqli_query($connexion, $sql);
 
-$sql = "SELECT p.id_pat, p.nom_pat, p.prenom_pat 
-        FROM patient p";
+$sql = "SELECT * FROM users where id_r = 4";
 $patients = mysqli_query($connexion, $sql);
 
 // Handle form submission
@@ -53,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <select class="form-control form-select" id="id_pat" name="id_pat" required>
                 <?php
                 while ($patient = mysqli_fetch_assoc($patients)) {
-                    echo "<option value='{$patient['id_pat']}'>{$patient['nom_pat']} {$patient['prenom_pat']}</option>";
+                    echo "<option value='{$patient['id_user']}'>{$patient['nom']} {$patient['prenom']}</option>";
                 }
                 ?>
             </select>

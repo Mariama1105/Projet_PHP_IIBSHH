@@ -11,7 +11,7 @@
         <div class="collapse navbar-collapse" id="mainNav">
             <ul class="navbar-nav me-auto">
                 <!-- Admin/All roles -->
-                <?php if ($_SESSION['user_role'] == 1): ?>
+                <?php if ($_SESSION['user_role'] == 0): ?>
                     <li class="nav-item">
                         <a class="nav-link" href="index.php?action=listeUser">
                             <i class="fas fa-users me-1"></i> Utilisateurs
@@ -25,12 +25,21 @@
                 <?php endif; ?>
                 
                 <!-- Doctor and Admin -->
-                <?php if (in_array($_SESSION['user_role'], [1, 2])): ?>
+                <?php if ($_SESSION['user_role'] == 1 || $_SESSION['user_role'] == 0): ?>
                     <li class="nav-item">
                         <a class="nav-link" href="index.php?action=listeConsultation">
                             <i class="fas fa-notes-medical me-1"></i> Consultations
                         </a>
                     </li>
+                    
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.php?action=listeRDV">
+                            <i class="fas fa-calendar-check me-1"></i> Rendez-vous
+                        </a>
+                    </li>
+                <?php endif; ?>
+
+                <?php if ($_SESSION['user_role'] == 5): ?>
                     <li class="nav-item">
                         <a class="nav-link" href="index.php?action=listeRDV">
                             <i class="fas fa-calendar-check me-1"></i> Rendez-vous
@@ -38,8 +47,7 @@
                     </li>
                 <?php endif; ?>
                 
-                <!-- Service Manager and Admin -->
-                <?php if (in_array($_SESSION['user_role'], [1, 3])): ?>
+                <?php if ($_SESSION['user_role'] == 1 || $_SESSION['user_role'] == 6): ?>
                     <li class="nav-item">
                         <a class="nav-link" href="index.php?action=listePrestation">
                             <i class="fas fa-procedures me-1"></i> Prestations
@@ -47,8 +55,7 @@
                     </li>
                 <?php endif; ?>
                 
-                <!-- Pharmacist and Admin -->
-                <?php if (in_array($_SESSION['user_role'], [1, 4])): ?>
+                <?php if ($_SESSION['user_role'] == 1 || $_SESSION['user_role'] == 0): ?>
                     <li class="nav-item">
                         <a class="nav-link" href="index.php?action=listeMedicaments">
                             <i class="fas fa-pills me-1"></i> Médicaments
@@ -56,8 +63,7 @@
                     </li>
                 <?php endif; ?>
                 
-                <!-- Patient -->
-                <?php if ($_SESSION['user_role'] == 5): ?>
+                <?php if ($_SESSION['user_role'] == 4): ?>
                     <li class="nav-item">
                         <a class="nav-link" href="index.php?action=mesConsultations">
                             <i class="fas fa-notes-medical me-1"></i> Mes Consultations
@@ -77,7 +83,11 @@
             </ul>
             
             <ul class="navbar-nav">
+                <a type="button" class="btn btn-success" href="?action=voirStats">
+                        <i class="fas fa-user-circle me-1"></i>Voir Les statiques
+                    </a>
                 <li class="nav-item dropdown">
+
                     <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
                         <i class="fas fa-user-circle me-1"></i> <?= $_SESSION['user_name'] ?? 'Compte' ?>
                     </a>

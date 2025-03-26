@@ -1,16 +1,15 @@
 <?php
 $sql = "SELECT p.*, 
-               pat.nom_pat, pat.prenom_pat,
-               med.nom AS med_nom, med.prenom AS med_prenom,
-               c.date AS cons_date
+               patient.prenom AS patient_prenom, patient.nom AS patient_nom,
+               medecin.prenom AS medecin_prenom, medecin.nom AS medecin_nom,
+               c.date AS consultation_date
         FROM prestations p
-        LEFT JOIN patient pat ON p.id_patient = pat.id_pat
-        LEFT JOIN users med ON p.id_medecin = med.id_user
+        LEFT JOIN users patient ON p.id_patient = patient.id_user
+        LEFT JOIN users medecin ON p.id_medecin = medecin.id_user
         LEFT JOIN consultation c ON p.id_cons = c.id";
 
 $prestations = mysqli_query($connexion, $sql);
 
-// Check if query succeeded
 if (!$prestations) {
     die("Erreur de requête: " . mysqli_error($connexion));
 }
@@ -41,9 +40,9 @@ if (!$prestations) {
                 <?php while($prestation = mysqli_fetch_assoc($prestations)): ?>
                 <tr>
                     <td><?= $prestation['id_prestation'] ?></td>
-                    <td><?= $prestation['prenom_pat'] . ' ' . $prestation['nom_pat'] ?></td>
-                    <td><?= $prestation['med_prenom'] . ' ' . $prestation['med_nom'] ?></td>
-                    <td><?= $prestation['cons_date'] ? date('d/m/Y H:i', strtotime($prestation['cons_date'])) : '-' ?></td>
+                    <td><?= $prestation['patient_prenom'] . ' ' . $prestation['patient_nom'] ?></td>
+                    <td><?= $prestation['medecin_prenom'] . ' ' . $prestation['medecin_nom'] ?></td>
+                    <td><?= $prestation['consultation_date'] ? date('d/m/Y H:i', strtotime($prestation['consultation_date'])) : '-' ?></td>
                     <td><?= $prestation['type_pres'] ?></td>
                     <td><?= date('d/m/Y H:i', strtotime($prestation['date_pres'])) ?></td>
                     <td>

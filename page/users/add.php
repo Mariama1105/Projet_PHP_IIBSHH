@@ -11,6 +11,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = "Erreur lors de l'ajout de l'utilisateur";
     }
 }
+
+$sql_specialite = "SELECT * FROM specialite";
+$specialites = mysqli_query($connexion, $sql_specialite);
 ?>
 
 <div class="container mt-4">
@@ -31,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="col-md-6">
                 <div class="mb-3">
                     <label class="form-label">Prénom</label>
-                    <input type="text" name="prenom" class="form-control" required>
+                    se
                 </div>
             </div>
         </div>
@@ -40,7 +43,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="col-md-6">
                 <div class="mb-3">
                     <label class="form-label">Spécialité</label>
-                    <input type="text" name="specialite" class="form-control">
+                    <div class="mb-3">
+                        <label for="" class="form-label">City</label>
+                        <select class="form-select" name="specialite" id="">
+                            <option value="Pas de specialite">Pas de Specialite</option>
+                            <?php while($specialite = mysqli_fetch_assoc($specialites)):?>
+                                <option value="<?= $specialite['id_specialite']?>"><?= $specialite['libelle_spe']?></option>
+                            <?php endwhile;?>
+                        </select>
+                    </div>
+                    
+
                 </div>
             </div>
             <div class="col-md-6">

@@ -1,14 +1,44 @@
+<?php
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $id_patient = $_POST['id_patient'];
+    $id_medecin = $_POST['id_medecin'];
+    $id_cons = $_POST['id_cons'];
+    $type_pres = $_POST['type_pres'];
+    $date_pres = $_POST['date_pres'];
+
+    // Insert into database
+    $sql = "INSERT INTO prestations (id_patient, id_medecin, id_cons, type_pres, date_pres) 
+            VALUES ('$id_patient', '$id_medecin', " . ($id_cons ? "'$id_cons'" : "NULL") . ", '$type_pres', '$date_pres')";
+    
+    if (mysqli_query($connexion, $sql)) {
+        header("Location: index.php?action=listePrestation");
+        exit();
+    } else {
+        $error = "Erreur: " . mysqli_error($connexion);
+    }
+}
+
+// Fetch data for form
+$patients = mysqli_query($connexion, "SELECT * FROM users WHERE id_r = 4");
+$medecins = mysqli_query($connexion, "SELECT * FROM users WHERE id_r = (SELECT id_role FROM role WHERE libelle_role = 'medecin')");
+$consultations = mysqli_query($connexion, "SELECT * FROM consultation");
+?>
+
 <div class="container mt-4">
     <h2 class="mb-4">Ajouter une Prestation</h2>
     
-    <form method="POST" action="index.php?action=savePrestation">
+    <?php if (isset($error)): ?>
+        <div class="alert alert-danger"><?= $error ?></div>
+    <?php endif; ?>
+    
+    <form method="POST" action="index.php?action=addPrestation">
         <div class="row">
             <div class="col-md-6">
                 <div class="mb-3">
                     <label class="form-label">Patient</label>
                     <select name="id_patient" class="form-select" required>
                         <?php while($patient = mysqli_fetch_assoc($patients)): ?>
-                            <option value="<?= $patient['id_pat'] ?>"><?= $patient['prenom_pat'] . ' ' . $patient['nom_pat'] ?></option>
+                            <option value="<?= $patient['id_user'] ?>"><?= $patient['prenom'] . ' ' . $patient['nom'] ?></option>
                         <?php endwhile; ?>
                     </select>
                 </div>
@@ -34,7 +64,7 @@
                         <?php while($consultation = mysqli_fetch_assoc($consultations)): ?>
                             <option value="<?= $consultation['id'] ?>">
                                 <?= date('d/m/Y H:i', strtotime($consultation['date'])) ?> - 
-                                <?= $consultation['constituant_pris'] ?>
+                                <?= $consultation['constituant_pris'] ?>    
                             </option>
                         <?php endwhile; ?>
                     </select>

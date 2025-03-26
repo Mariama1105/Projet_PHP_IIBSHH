@@ -1,3 +1,6 @@
+<?php
+    $medecins = mysqli_query($connexion, "SELECT * FROM users WHERE id_r = (SELECT id_role FROM role WHERE libelle_role = 'medecin')");
+?>
 <div class="container mt-4">
     <h2 class="mb-4">Modifier Prestation</h2>
     
