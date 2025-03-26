@@ -247,7 +247,10 @@ require_once "shared/database.php";
             if ($_GET['action'] == 'voirStats'){
                 require_once 'chart.php';
             }
-
+            if($_GET["action"] == 'creerCompte'){
+                require_once "page/auth/creerCompte.php";
+            }
+        
             if($_GET["action"] == 'deconnexion'){
                 session_destroy();
                 header("Location: index.php");
@@ -255,7 +258,9 @@ require_once "shared/database.php";
 
         } else {
 
+
             require_once "page/auth/login.php";
+
         }
         ?>
     </main>

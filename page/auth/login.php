@@ -60,6 +60,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </div>
                 
                 <button type="submit" class="btn btn-primary w-100">Se connecter</button>
+                <a href="?action=creerCompte">Vous n'avez pas de compte? Créer un Compte</a>
             </form>
         </div>
         <div class="card-footer text-center">
